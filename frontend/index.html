@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Mobil Semarang - Sewa Mobil Murah & Profesional</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mobil.html">Mobil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat</a></li>
+                </ul>
+                <div class="d-flex align-items-center" id="authNavLinks"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="hero-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 fade-in">
+                        <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">Rental Mobil Terpercaya</span>
+                        <h1 class="display-5 fw-bold mb-3">Eksplorasi Kota Semarang Lebih Nyaman & Aman</h1>
+                        <p class="text-secondary mb-4">Layanan rental mobil lepas kunci atau dengan sopir profesional. Armada bersih, terawat, dan siap mengantar perjalanan Anda.</p>
+                        <div class="d-flex gap-3">
+                            <a href="mobil.html" class="btn btn-primary-custom">Pilih Mobil</a>
+                            <a href="#caraBooking" class="btn btn-outline-secondary rounded-3">Cara Rental</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center mt-5 mt-lg-0 fade-in">
+                        <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800" alt="Rental Mobil Semarang" class="img-fluid rounded-4 shadow-sm hero-img">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5 bg-white">
+            <div class="container">
+                <div class="row text-center g-4">
+                    <div class="col-md-3 col-6">
+                        <h3 class="fw-bold text-primary mb-1">50+</h3>
+                        <p class="text-secondary mb-0">Armada Mobil</p>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h3 class="fw-bold text-primary mb-1">10k+</h3>
+                        <p class="text-secondary mb-0">Pelanggan Puas</p>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h3 class="fw-bold text-primary mb-1">24/7</h3>
+                        <p class="text-secondary mb-0">Layanan Bantuan</p>
+                    </div>
+                    <div class="col-md-3 col-6">
+                        <h3 class="fw-bold text-primary mb-1">4.9/5</h3>
+                        <p class="text-secondary mb-0">Rating Review</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-5">
+            <div class="container">
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <div>
+                        <h2 class="fw-bold mb-1">Mobil Pilihan Populer</h2>
+                        <p class="text-secondary mb-0">Pilihan favorit armada terbaik kami minggu ini</p>
+                    </div>
+                    <a href="mobil.html" class="btn btn-link text-primary text-decoration-none fw-semibold">Lihat Semua <i class="bi bi-arrow-right"></i></a>
+                </div>
+                <div class="row g-4" id="popularCarContainer"></div>
+            </div>
+        </section>
+
+        <section id="caraBooking" class="py-5 bg-white">
+            <div class="container">
+                <div class="text-center mb-5">
+                    <h2 class="fw-bold">Cara Mudah Booking</h2>
+                    <p class="text-secondary">Proses cepat tanpa ribet dalam 3 langkah sederhana</p>
+                </div>
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-4 bg-light">
+                            <i class="bi bi-search text-primary display-5 mb-3"></i>
+                            <h5 class="fw-bold">1. Pilih Mobil</h5>
+                            <p class="text-secondary small mb-0">Cari mobil sesuai kebutuhan kapasitas dan jenis transmisi yang diinginkan.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-4 bg-light">
+                            <i class="bi bi-calendar-check text-primary display-5 mb-3"></i>
+                            <h5 class="fw-bold">2. Isi Detail Sewa</h5>
+                            <p class="text-secondary small mb-0">Tentukan tanggal mulai, durasi hari, dan opsi dengan/tanpa driver.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="p-4 rounded-4 bg-light">
+                            <i class="bi bi-key text-primary display-5 mb-3"></i>
+                            <h5 class="fw-bold">3. Ambil Kunci / Jalan</h5>
+                            <p class="text-secondary small mb-0">Mobil siap diantar atau diambil sesuai kesepakatan.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-dark text-white pt-5 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <h5 class="fw-bold text-primary mb-3"><i class="bi bi-car-front-fill me-2"></i>SemarangCar</h5>
+                    <p class="text-secondary small">Penyedia jasa rental mobil terbaik di Kota Semarang dengan pilihan armada terlengkap dan pelayanan profesional.</p>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold mb-3">Navigasi</h6>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="mobil.html" class="text-secondary text-decoration-none">Daftar Mobil</a></li>
+                        <li class="mb-2"><a href="riwayat.html" class="text-secondary text-decoration-none">Riwayat</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold mb-3">Kontak & Alamat</h6>
+                    <p class="text-secondary small mb-1"><i class="bi bi-geo-alt me-2"></i>Jl. Pemuda No. 123, Semarang</p>
+                    <p class="text-secondary small mb-1"><i class="bi bi-telephone me-2"></i>+62 812 3456 7890</p>
+                    <p class="text-secondary small"><i class="bi bi-envelope me-2"></i>info@semarangcar.com</p>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold mb-3">Ikuti Kami</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-secondary btn-sm text-white"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm text-white"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm text-white"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary">
+            <p class="text-center text-secondary small mb-0">&copy; 2026 SemarangCar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <button id="btnBackToTop" class="btn btn-primary-custom shadow"><i class="bi bi-arrow-up"></i></button>
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', fetchPopularCars);
+
+        async function fetchPopularCars() {
+            const container = document.getElementById('popularCarContainer');
+            try {
+                const response = await fetch(`${API_BASE_URL}/mobil`);
+                const cars = await response.json();
+                
+                container.innerHTML = cars.slice(0, 3).map(car => `
+                    <div class="col-md-4">
+                        <div class="card card-modern h-100 p-3">
+                            <img src="${car.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=400'}" class="card-img-top rounded-3 mb-3" style="height:200px; object-fit:cover;">
+                            <div class="card-body p-0">
+                                <h5 class="card-title fw-bold mb-2">${car.nama}</h5>
+                                <p class="text-primary fw-bold mb-3">${formatRupiah(car.harga)} <span class="text-secondary fw-normal fs-6">/ hari</span></p>
+                                <div class="d-flex justify-content-between text-secondary small mb-3 border-top border-bottom py-2">
+                                    <span><i class="bi bi-gear me-1"></i>${car.transmisi}</span>
+                                    <span><i class="bi bi-people me-1"></i>${car.kapasitas} Kursi</span>
+                                </div>
+                                <a href="detail.html?id=${car.id}" class="btn btn-outline-primary w-100">Detail Mobil</a>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                container.innerHTML = '<p class="text-danger">Gagal memuat daftar mobil populer.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

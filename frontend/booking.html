@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Mobil - Rental Mobil Semarang</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="index.html">
+                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            </a>
+            <div class="d-flex align-items-center" id="authNavLinks"></div>
+        </div>
+    </nav>
+
+    <main class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="card card-modern p-4">
+                        <h4 class="fw-bold mb-4">Formulir Pemesanan</h4>
+                        <form id="bookingForm">
+                            <div class="mb-3">
+                                <label class="form-label">Tanggal Mulai</label>
+                                <input type="date" id="tanggalMulai" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Durasi (Hari)</label>
+                                <input type="number" id="durasiHari" class="form-control" min="1" value="1" required>
+                            </div>
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" id="denganSopir" class="form-check-input">
+                                <label class="form-check-label" for="denganSopir">Dengan Driver (+ Rp150.000 / hari)</label>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Catatan Tambahan</label>
+                                <textarea id="catatan" class="form-control" rows="3" placeholder="Contoh: Lokasi penjemputan..."></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary-custom w-100">Konfirmasi Pemesanan</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card card-modern p-4" id="ringkasanBox">
+                        <h4 class="fw-bold mb-3">Ringkasan Biaya</h4>
+                        <div id="ringkasanContent"><p class="text-secondary">Memuat data mobil...</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/script.js"></script>
+    <script>
+        const carId = new URLSearchParams(window.location.search).get('id');
+        let hargaMobil = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (!user) {
+                showToast('Silakan login terlebih dahulu untuk melakukan booking', 'danger');
+                setTimeout(() => window.location.href = 'login.html', 1500);
+                return;
+            }
+            loadCarSummary();
+
+            document.getElementById('durasiHari').addEventListener('input', calculateTotal);
+            document.getElementById('denganSopir').addEventListener('change', calculateTotal);
+            document.getElementById('bookingForm').addEventListener('submit', submitBooking);
+        });
+
+        async function loadCarSummary() {
+            try {
+                const res = await fetch(`${API_BASE_URL}/mobil/${carId}`);
+                const car = await res.json();
+                hargaMobil = car.harga;
+                calculateTotal();
+            } catch (e) {
+                document.getElementById('ringkasanContent').innerHTML = '<p class="text-danger">Gagal memuat mobil</p>';
+            }
+        }
+
+        function calculateTotal() {
+            const durasi = parseInt(document.getElementById('durasiHari').value) || 1;
+            const sopir = document.getElementById('denganSopir').checked ? 150000 : 0;
+            const total = (hargaMobil + sopir) * durasi;
+
+            document.getElementById('ringkasanContent').innerHTML = `
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Sewa Mobil/Hari</span>
+                    <span>${formatRupiah(hargaMobil)}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Driver/Hari</span>
+                    <span>${formatRupiah(sopir)}</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Durasi</span>
+                    <span>${durasi} Hari</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between fw-bold text-primary fs-5">
+                    <span>Total Biaya</span>
+                    <span>${formatRupiah(total)}</span>
+                </div>
+            `;
+        }
+
+        async function submitBooking(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('user'));
+
+            const payload = {
+                userId: user.id,
+                mobilId: parseInt(carId),
+                tanggalMulai: document.getElementById('tanggalMulai').value,
+                durasiHari: parseInt(document.getElementById('durasiHari').value),
+                denganSopir: document.getElementById('denganSopir').checked,
+                catatan: document.getElementById('catatan').value
+            };
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/booking`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showToast('Booking berhasil dibuat!', 'success');
+                    setTimeout(() => window.location.href = 'riwayat.html', 1500);
+                } else {
+                    const err = await res.text();
+                    showToast(err || 'Gagal membuat booking', 'danger');
+                }
+            } catch (e) {
+                showToast('Terjadi kesalahan jaringan', 'danger');
+            }
+        }
+    </script>
+</body>
+</html>
