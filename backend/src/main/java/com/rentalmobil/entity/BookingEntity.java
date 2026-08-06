@@ -43,11 +43,32 @@ public class BookingEntity {
     @Column(nullable = false)
     private String status;
 
+    @Column(name = "metode_pembayaran")
+    private String metodePembayaran;
+
+    @Column(name = "bukti_pembayaran_url", columnDefinition = "TEXT")
+    private String buktiPembayaranUrl;
+
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        if (this.status == null) {
+            this.status = StatusBooking.PENDING.name();
+        }
+        if (this.metodePembayaran == null) {
+            this.metodePembayaran = "COD";
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = LocalDateTime.now();
     }
 }

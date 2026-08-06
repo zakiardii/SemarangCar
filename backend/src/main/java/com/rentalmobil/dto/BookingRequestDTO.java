@@ -1,10 +1,16 @@
 package com.rentalmobil.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BookingRequestDTO {
 
     @NotNull(message = "User ID wajib diisi")
@@ -24,4 +30,8 @@ public class BookingRequestDTO {
     private Boolean denganSopir;
 
     private String catatan;
+
+    private String metodePembayaran;
+
+    private String buktiPembayaranUrl;
 }

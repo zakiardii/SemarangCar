@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Mobil - Rental Mobil Semarang</title>
+    <title>Katalog Mobil - SemarangCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -11,56 +11,142 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="index.html">
-                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                <span>Semarang<span class="text-gradient">Car</span></span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mx-auto">
+                <ul class="navbar-nav mx-auto gap-1">
                     <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link" href="mobil.html">Mobil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="mobil.html">Katalog Mobil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat Sewa</a></li>
                 </ul>
                 <div class="d-flex align-items-center" id="authNavLinks"></div>
             </div>
         </div>
     </nav>
 
-    <main class="py-5">
+    <main class="py-5" id="main">
         <div class="container">
-            <h2 class="fw-bold mb-4">Daftar Armada Mobil</h2>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+                <div>
+                    <span class="badge-custom badge-indigo mb-2">Eksplorasi Armada</span>
+                    <h2 class="fw-bold mb-1">Daftar Armada Mobil Semarang</h2>
+                    <p class="text-secondary mb-0">Temukan mobil yang tepat untuk kebutuhan bisnis, keluarga, atau liburan</p>
+                </div>
+            </div>
             
             <div class="card card-modern p-4 mb-4">
-                <form id="filterForm" class="row g-3">
-                    <div class="col-md-3">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Cari nama mobil...">
+                <form id="filterForm" class="row g-3 align-items-end">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label text-muted small fw-medium" for="searchInput">Pencarian Mobil</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 border-slate-300 rounded-start-3"><i class="bi bi-search text-secondary"></i></span>
+                            <input type="text" id="searchInput" class="form-control border-start-0 ps-0" placeholder="Ketik nama / merk...">
+                        </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-3 col-md-6">
+                        <label class="form-label text-muted small fw-medium" for="transmisiSelect">Jenis Transmisi</label>
                         <select id="transmisiSelect" class="form-select">
                             <option value="">Semua Transmisi</option>
-                            <option value="Otomatis">Otomatis</option>
+                            <option value="Otomatis">Otomatis (Matic)</option>
                             <option value="Manual">Manual</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-lg-2 col-md-6">
+                        <label class="form-label text-muted small fw-medium" for="kapasitasSelect">Kapasitas Kursi</label>
                         <select id="kapasitasSelect" class="form-select">
                             <option value="">Semua Kapasitas</option>
-                            <option value="4">>= 4 Kursi</option>
-                            <option value="6">>= 6 Kursi</option>
+                            <option value="5">Minimal 5 Kursi</option>
+                            <option value="7">Minimal 7 Kursi</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-primary-custom w-100"><i class="bi bi-funnel me-1"></i> Filter</button>
+                    <div class="col-lg-2 col-md-6">
+                        <label class="form-label text-muted small fw-medium" for="maxHargaInput">Harga Maksimum / Hari</label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 border-slate-300 rounded-start-3 text-secondary small">Rp</span>
+                            <input type="number" id="maxHargaInput" class="form-control border-start-0 ps-0" placeholder="500000" step="50000">
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-12">
+                        <button type="submit" class="btn btn-primary-custom w-100 py-2.5">
+                            <i class="bi bi-funnel-fill"></i> Filter Armada
+                        </button>
                     </div>
                 </form>
             </div>
 
-            <div class="row g-4" id="carGrid"></div>
+            <div class="row g-4" id="carGrid" aria-live="polite">
+                <div class="col-md-4">
+                    <div class="card card-modern p-3">
+                        <div class="skeleton mb-3" style="height: 200px; border-radius:14px;"></div>
+                        <div class="skeleton mb-2" style="height: 24px; width: 70%;"></div>
+                        <div class="skeleton mb-3" style="height: 20px; width: 40%;"></div>
+                        <div class="skeleton" style="height: 42px; border-radius:10px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-modern p-3">
+                        <div class="skeleton mb-3" style="height: 200px; border-radius:14px;"></div>
+                        <div class="skeleton mb-2" style="height: 24px; width: 70%;"></div>
+                        <div class="skeleton mb-3" style="height: 20px; width: 40%;"></div>
+                        <div class="skeleton" style="height: 42px; border-radius:10px;"></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card card-modern p-3">
+                        <div class="skeleton mb-3" style="height: 200px; border-radius:14px;"></div>
+                        <div class="skeleton mb-2" style="height: 24px; width: 70%;"></div>
+                        <div class="skeleton mb-3" style="height: 20px; width: 40%;"></div>
+                        <div class="skeleton" style="height: 42px; border-radius:10px;"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="index.html">
+                        <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                        <span class="text-white">Semarang<span class="text-gradient">Car</span></span>
+                    </a>
+                    <p class="text-secondary small me-lg-4">Penyedia jasa rental mobil terbaik di Kota Semarang dengan pilihan armada terlengkap dan pelayanan profesional.</p>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Navigasi</h6>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="mobil.html" class="text-secondary text-decoration-none">Katalog Mobil</a></li>
+                        <li class="mb-2"><a href="riwayat.html" class="text-secondary text-decoration-none">Riwayat Booking</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Kontak & Alamat</h6>
+                    <p class="text-secondary small mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>Jl. Pemuda No. 123, Semarang</p>
+                    <p class="text-secondary small mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+62 812 3456 7890</p>
+                    <p class="text-secondary small"><i class="bi bi-envelope me-2 text-primary"></i>info@semarangcar.com</p>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Sosial Media</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <p class="text-center text-secondary small mb-0">&copy; 2026 SemarangCar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <button id="btnBackToTop" class="btn btn-primary-custom" aria-label="Kembali ke Atas"><i class="bi bi-arrow-up fs-5"></i></button>
     <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -72,48 +158,79 @@
                 e.preventDefault();
                 fetchCars();
             });
+
+            let debounceTimer;
+            const triggerDebounceFetch = () => {
+                clearTimeout(debounceTimer);
+                debounceTimer = setTimeout(fetchCars, 400);
+            };
+
+            document.getElementById('searchInput').addEventListener('input', triggerDebounceFetch);
+            document.getElementById('maxHargaInput').addEventListener('input', triggerDebounceFetch);
+            document.getElementById('transmisiSelect').addEventListener('change', fetchCars);
+            document.getElementById('kapasitasSelect').addEventListener('change', fetchCars);
         });
 
         async function fetchCars() {
             const grid = document.getElementById('carGrid');
-            grid.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-primary"></div></div>';
-
+            
             const search = document.getElementById('searchInput').value;
             const transmisi = document.getElementById('transmisiSelect').value;
             const kapasitas = document.getElementById('kapasitasSelect').value;
+            const maxHarga = document.getElementById('maxHargaInput').value;
 
             const url = new URL(`${API_BASE_URL}/mobil`);
             if (search) url.searchParams.append('search', search);
             if (transmisi) url.searchParams.append('transmisi', transmisi);
             if (kapasitas) url.searchParams.append('kapasitas', kapasitas);
+            if (maxHarga) url.searchParams.append('maxHarga', maxHarga);
 
             try {
                 const res = await fetch(url);
                 const cars = await res.json();
 
-                if (cars.length === 0) {
-                    grid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-secondary">Mobil tidak ditemukan.</p></div>';
+                if (!cars || cars.length === 0) {
+                    grid.innerHTML = `
+                        <div class="col-12 text-center py-5">
+                            <div class="p-5 rounded-4 bg-white border border-light shadow-sm">
+                                <i class="bi bi-search text-secondary display-4 mb-3 d-block"></i>
+                                <h5 class="fw-bold">Tidak ada armada mobil yang cocok</h5>
+                                <p class="text-secondary small mb-0">Coba ubah kata kunci atau tingkatkan batas harga maksimum Anda.</p>
+                            </div>
+                        </div>
+                    `;
                     return;
                 }
 
                 grid.innerHTML = cars.map(car => `
-                    <div class="col-md-4 fade-in">
+                    <div class="col-md-4 fade-in-up">
                         <div class="card card-modern h-100 p-3">
-                            <img src="${car.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=400'}" class="card-img-top rounded-3 mb-3" style="height:200px; object-fit:cover;">
-                            <div class="card-body p-0">
-                                <h5 class="card-title fw-bold mb-2">${car.nama}</h5>
-                                <p class="text-primary fw-bold mb-3">${formatRupiah(car.harga)} <span class="text-secondary fw-normal fs-6">/ hari</span></p>
-                                <div class="d-flex justify-content-between text-secondary small mb-3 border-top border-bottom py-2">
-                                    <span><i class="bi bi-gear me-1"></i>${car.transmisi}</span>
-                                    <span><i class="bi bi-people me-1"></i>${car.kapasitas} Kursi</span>
+                            <div class="car-card-img-wrapper mb-3">
+                                <img src="${car.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=400'}" alt="${escapeHTML(car.nama)}" class="car-card-img" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=400';">
+                            </div>
+                            <div class="card-body p-0 d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="badge-custom badge-indigo">${escapeHTML(car.merk)}</span>
+                                    <span class="badge-custom ${car.statusTersedia ? 'badge-emerald' : 'badge-rose'}">
+                                        ${car.statusTersedia ? 'Tersedia' : 'Disewa'}
+                                    </span>
                                 </div>
-                                <a href="detail.html?id=${car.id}" class="btn btn-outline-primary w-100">Detail Mobil</a>
+                                <h5 class="fw-bold mb-2">${escapeHTML(car.nama)}</h5>
+                                <p class="text-primary fw-bold fs-5 mb-3">${formatRupiah(car.harga)} <span class="text-secondary fw-normal fs-6">/ hari</span></p>
+                                <div class="d-flex justify-content-between text-secondary small mb-3 border-top border-bottom py-2">
+                                    <span><i class="bi bi-gear me-1"></i>${escapeHTML(car.transmisi)}</span>
+                                    <span><i class="bi bi-people me-1"></i>${car.kapasitas} Kursi</span>
+                                    <span><i class="bi bi-fuel-pump me-1"></i>${escapeHTML(car.bahanBakar)}</span>
+                                </div>
+                                <a href="detail.html?id=${car.id}" class="btn ${car.statusTersedia ? 'btn-primary-custom' : 'btn-secondary-custom'} w-100 mt-auto text-center">
+                                    ${car.statusTersedia ? 'Sewa Mobil Ini' : 'Lihat Detail'}
+                                </a>
                             </div>
                         </div>
                     </div>
                 `).join('');
             } catch (e) {
-                grid.innerHTML = '<div class="col-12 text-center text-danger">Gagal mengambil data mobil.</div>';
+                grid.innerHTML = '<div class="col-12 text-center text-danger py-5">Gagal mengambil data armada mobil dari server.</div>';
             }
         }
     </script>

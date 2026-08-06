@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking Mobil - Rental Mobil Semarang</title>
+    <title>Reservasi Booking - SemarangCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -11,10 +11,21 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="index.html">
-                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                <span>Semarang<span class="text-gradient">Car</span></span>
             </a>
-            <div class="d-flex align-items-center" id="authNavLinks"></div>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mobil.html">Katalog Mobil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat Sewa</a></li>
+                </ul>
+                <div class="d-flex align-items-center" id="authNavLinks"></div>
+            </div>
         </div>
     </nav>
 
@@ -22,38 +33,167 @@
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-7">
-                    <div class="card card-modern p-4">
-                        <h4 class="fw-bold mb-4">Formulir Pemesanan</h4>
+                    <div class="card card-modern p-4 p-md-5 fade-in-up">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge-custom badge-indigo">Form Reservasi</span>
+                        </div>
+                        <h3 class="fw-bold mb-4">Lengkapi Formulir Pemesanan</h3>
+                        
                         <form id="bookingForm">
                             <div class="mb-3">
-                                <label class="form-label">Tanggal Mulai</label>
+                                <label class="form-label" for="tanggalMulai">Tanggal Mulai Sewa</label>
                                 <input type="date" id="tanggalMulai" class="form-control" required>
                             </div>
+                            
                             <div class="mb-3">
-                                <label class="form-label">Durasi (Hari)</label>
-                                <input type="number" id="durasiHari" class="form-control" min="1" value="1" required>
+                                <label class="form-label" for="durasiHari">Durasi Sewa (Hari)</label>
+                                <input type="number" id="durasiHari" class="form-control" min="1" max="30" value="1" required>
                             </div>
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" id="denganSopir" class="form-check-input">
-                                <label class="form-check-label" for="denganSopir">Dengan Driver (+ Rp150.000 / hari)</label>
+
+                            <div class="p-3 bg-light rounded-4 border border-light mb-4">
+                                <div class="form-check form-switch d-flex align-items-center justify-content-between ps-0">
+                                    <label class="form-check-label fw-bold mb-0 text-dark cursor-pointer" for="denganSopir">
+                                        <i class="bi bi-person-badge text-primary me-2 fs-5"></i> Opsi dengan Driver Profesional
+                                        <span class="d-block text-secondary small fw-normal">Tarif tambahan Rp150.000 / hari</span>
+                                    </label>
+                                    <input class="form-check-input ms-3 cursor-pointer" type="checkbox" role="switch" id="denganSopir" style="width: 46px; height: 24px;">
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Catatan Tambahan</label>
-                                <textarea id="catatan" class="form-control" rows="3" placeholder="Contoh: Lokasi penjemputan..."></textarea>
+
+                            <!-- Pilihan Metode Pembayaran -->
+                            <div class="mb-4">
+                                <label class="form-label fw-bold mb-2">Metode Pembayaran</label>
+                                <div class="row g-2">
+                                    <div class="col-6 col-md-3">
+                                        <input type="radio" class="btn-check" name="metodePembayaran" id="payCOD" value="COD" checked>
+                                        <label class="btn btn-outline-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1" for="payCOD">
+                                            <i class="bi bi-cash-stack fs-4"></i>
+                                            <span class="small fw-semibold">Tunai / COD</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <input type="radio" class="btn-check" name="metodePembayaran" id="payBCA" value="TRANSFER_BCA">
+                                        <label class="btn btn-outline-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1" for="payBCA">
+                                            <i class="bi bi-bank fs-4"></i>
+                                            <span class="small fw-semibold">Bank BCA</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <input type="radio" class="btn-check" name="metodePembayaran" id="payMandiri" value="TRANSFER_MANDIRI">
+                                        <label class="btn btn-outline-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1" for="payMandiri">
+                                            <i class="bi bi-bank2 fs-4"></i>
+                                            <span class="small fw-semibold">Bank Mandiri</span>
+                                        </label>
+                                    </div>
+                                    <div class="col-6 col-md-3">
+                                        <input type="radio" class="btn-check" name="metodePembayaran" id="payQRIS" value="QRIS">
+                                        <label class="btn btn-outline-primary w-100 py-3 rounded-4 d-flex flex-column align-items-center gap-1" for="payQRIS">
+                                            <i class="bi bi-qr-code-scan fs-4"></i>
+                                            <span class="small fw-semibold">QRIS Instan</span>
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <button type="submit" class="btn btn-primary-custom w-100">Konfirmasi Pemesanan</button>
+
+                            <div class="mb-4">
+                                <label class="form-label" for="catatan">Catatan / Alamat Penjemputan</label>
+                                <textarea id="catatan" class="form-control" rows="3" placeholder="Contoh: Tolong antar mobil ke Bandara Ahmad Yani pukul 08:00 WIB"></textarea>
+                            </div>
+
+                            <button type="submit" id="submitBookingBtn" class="btn btn-primary-custom w-100 py-3 fs-6">
+                                <span>Konfirmasi Pemesanan</span> <i class="bi bi-arrow-right-short fs-4"></i>
+                            </button>
                         </form>
                     </div>
                 </div>
+
                 <div class="col-lg-5">
-                    <div class="card card-modern p-4" id="ringkasanBox">
-                        <h4 class="fw-bold mb-3">Ringkasan Biaya</h4>
-                        <div id="ringkasanContent"><p class="text-secondary">Memuat data mobil...</p></div>
+                    <div class="card card-modern p-4 p-md-5 sticky-top fade-in-up" style="top: 100px;">
+                        <h4 class="fw-bold mb-3 border-bottom pb-3">Ringkasan Biaya</h4>
+                        <div id="ringkasanContent">
+                            <div class="skeleton mb-3" style="height: 24px;"></div>
+                            <div class="skeleton mb-3" style="height: 24px;"></div>
+                            <div class="skeleton mb-4" style="height: 40px;"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <!-- Modal Konfirmasi WhatsApp & Pembayaran -->
+    <div class="modal fade" id="successBookingModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 shadow-lg p-3">
+                <div class="modal-body text-center p-4">
+                    <div class="badge-emerald p-3 rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 70px; height: 70px;">
+                        <i class="bi bi-check-circle-fill display-5 text-emerald"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2">Reservasi Berhasil Dibuat!</h4>
+                    <p class="text-secondary small mb-4">Kode Booking Anda: <strong id="modalBookingId" class="text-primary">#0</strong></p>
+
+                    <div class="p-3 bg-light rounded-4 text-start small mb-4">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Total Pembayaran:</span>
+                            <strong id="modalTotalHarga" class="text-primary fs-6">Rp0</strong>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Metode Pembayaran:</span>
+                            <strong id="modalMetodeBayar" class="text-dark">Tunai / COD</strong>
+                        </div>
+                        <div id="paymentInstructionArea" class="mt-2 pt-2 border-top text-secondary">
+                            <!-- Diisi instruksi bank / QRIS secara dinamis -->
+                        </div>
+                    </div>
+
+                    <a id="waDirectBtn" href="#" target="_blank" class="btn btn-success w-100 py-3 rounded-4 fw-bold mb-2 d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-whatsapp fs-5"></i> Konfirmasi ke WhatsApp Admin
+                    </a>
+                    <a href="riwayat.html" class="btn btn-outline-secondary w-100 py-2.5 rounded-4 fw-semibold">
+                        Lihat Riwayat Pemesanan
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="index.html">
+                        <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                        <span class="text-white">Semarang<span class="text-gradient">Car</span></span>
+                    </a>
+                    <p class="text-secondary small me-lg-4">Penyedia jasa rental mobil terbaik di Kota Semarang dengan pilihan armada terlengkap dan pelayanan profesional.</p>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Navigasi</h6>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="mobil.html" class="text-secondary text-decoration-none">Katalog Mobil</a></li>
+                        <li class="mb-2"><a href="riwayat.html" class="text-secondary text-decoration-none">Riwayat Booking</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Kontak & Alamat</h6>
+                    <p class="text-secondary small mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>Jl. Pemuda No. 123, Semarang</p>
+                    <p class="text-secondary small mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+62 811 1111 111</p>
+                    <p class="text-secondary small"><i class="bi bi-envelope me-2 text-primary"></i>info@semarangcar.com</p>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Sosial Media</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/628111111111" target="_blank" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <p class="text-center text-secondary small mb-0">&copy; 2026 SemarangCar. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
@@ -61,15 +201,23 @@
     <script src="assets/js/script.js"></script>
     <script>
         const carId = new URLSearchParams(window.location.search).get('id');
-        let hargaMobil = 0;
+        let carData = null;
+        let bsSuccessModal = null;
 
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user) {
-                showToast('Silakan login terlebih dahulu untuk melakukan booking', 'danger');
-                setTimeout(() => window.location.href = 'login.html', 1500);
+                showToast('Silakan masuk terlebih dahulu untuk melakukan reservasi booking', 'danger');
+                setTimeout(() => window.location.href = 'login.html', 1200);
                 return;
             }
+
+            bsSuccessModal = new bootstrap.Modal(document.getElementById('successBookingModal'));
+
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('tanggalMulai').value = today;
+            document.getElementById('tanggalMulai').min = today;
+
             loadCarSummary();
 
             document.getElementById('durasiHari').addEventListener('input', calculateTotal);
@@ -78,38 +226,58 @@
         });
 
         async function loadCarSummary() {
+            if (!carId) {
+                window.location.href = 'mobil.html';
+                return;
+            }
             try {
                 const res = await fetch(`${API_BASE_URL}/mobil/${carId}`);
-                const car = await res.json();
-                hargaMobil = car.harga;
+                if (!res.ok) throw new Error();
+                carData = await res.json();
                 calculateTotal();
             } catch (e) {
-                document.getElementById('ringkasanContent').innerHTML = '<p class="text-danger">Gagal memuat mobil</p>';
+                document.getElementById('ringkasanContent').innerHTML = '<p class="text-danger">Gagal memuat informasi armada mobil</p>';
             }
         }
 
         function calculateTotal() {
-            const durasi = parseInt(document.getElementById('durasiHari').value) || 1;
-            const sopir = document.getElementById('denganSopir').checked ? 150000 : 0;
-            const total = (hargaMobil + sopir) * durasi;
+            if (!carData) return;
+
+            const durasi = Math.max(1, parseInt(document.getElementById('durasiHari').value) || 1);
+            const denganSopir = document.getElementById('denganSopir').checked;
+            const tarifSopir = denganSopir ? 150000 : 0;
+            const subtotalMobil = carData.harga * durasi;
+            const subtotalSopir = tarifSopir * durasi;
+            const total = subtotalMobil + subtotalSopir;
 
             document.getElementById('ringkasanContent').innerHTML = `
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Sewa Mobil/Hari</span>
-                    <span>${formatRupiah(hargaMobil)}</span>
+                <div class="d-flex align-items-center gap-3 mb-3 pb-3 border-bottom">
+                    <img src="${carData.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=200'}" alt="${escapeHTML(carData.nama)}" class="rounded-3" style="width: 70px; height: 55px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=200';">
+                    <div>
+                        <h6 class="fw-bold mb-1">${escapeHTML(carData.nama)}</h6>
+                        <span class="badge-custom badge-indigo">${escapeHTML(carData.merk)} • ${escapeHTML(carData.transmisi)}</span>
+                    </div>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Driver/Hari</span>
-                    <span>${formatRupiah(sopir)}</span>
+
+                <div class="d-flex justify-content-between text-secondary mb-2">
+                    <span>Sewa Mobil (${durasi} Hari)</span>
+                    <span>${formatRupiah(subtotalMobil)}</span>
                 </div>
-                <div class="d-flex justify-content-between mb-2">
-                    <span>Durasi</span>
-                    <span>${durasi} Hari</span>
+
+                <div class="d-flex justify-content-between text-secondary mb-2">
+                    <span>Layanan Driver</span>
+                    <span>${denganSopir ? formatRupiah(subtotalSopir) : 'Tanpa Driver'}</span>
                 </div>
-                <hr>
-                <div class="d-flex justify-content-between fw-bold text-primary fs-5">
-                    <span>Total Biaya</span>
-                    <span>${formatRupiah(total)}</span>
+
+                <hr class="my-3">
+
+                <div class="d-flex justify-content-between align-items-baseline mb-3">
+                    <span class="fw-bold text-dark fs-5">Total Pembayaran</span>
+                    <span class="fw-bold text-primary fs-4">${formatRupiah(total)}</span>
+                </div>
+
+                <div class="p-3 bg-primary-subtle text-primary rounded-3 small fw-medium">
+                    <i class="bi bi-shield-check me-1"></i> Pilih metode pembayaran & dapatkan bukti konfirmasi via WhatsApp.
                 </div>
             `;
         }
@@ -117,6 +285,11 @@
         async function submitBooking(e) {
             e.preventDefault();
             const user = JSON.parse(localStorage.getItem('user'));
+            const submitBtn = document.getElementById('submitBookingBtn');
+            const selectedMetode = document.querySelector('input[name="metodePembayaran"]:checked').value;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> Memproses booking...';
 
             const payload = {
                 userId: user.id,
@@ -124,25 +297,67 @@
                 tanggalMulai: document.getElementById('tanggalMulai').value,
                 durasiHari: parseInt(document.getElementById('durasiHari').value),
                 denganSopir: document.getElementById('denganSopir').checked,
-                catatan: document.getElementById('catatan').value
+                catatan: document.getElementById('catatan').value,
+                metodePembayaran: selectedMetode
             };
 
             try {
                 const res = await fetch(`${API_BASE_URL}/booking`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify(payload)
                 });
 
+                const data = await res.json();
+
                 if (res.ok) {
-                    showToast('Booking berhasil dibuat!', 'success');
-                    setTimeout(() => window.location.href = 'riwayat.html', 1500);
+                    showToast('Reservasi booking berhasil dibuat!', 'success');
+                    
+                    document.getElementById('modalBookingId').innerText = '#' + data.id;
+                    document.getElementById('modalTotalHarga').innerText = formatRupiah(data.totalHarga);
+                    
+                    let metodeText = 'Tunai / COD (Bayar di Tempat)';
+                    let instructionHTML = 'Pembayaran dapat dilakukan secara langsung saat serah terima armada mobil.';
+
+                    if (selectedMetode === 'TRANSFER_BCA') {
+                        metodeText = 'Transfer Bank BCA';
+                        instructionHTML = 'Transfer ke Rekening BCA: <strong>8830-123-999</strong> a/n SemarangCar';
+                    } else if (selectedMetode === 'TRANSFER_MANDIRI') {
+                        metodeText = 'Transfer Bank Mandiri';
+                        instructionHTML = 'Transfer ke Rekening Mandiri: <strong>137-00-9988-7711</strong> a/n SemarangCar';
+                    } else if (selectedMetode === 'QRIS') {
+                        metodeText = 'QRIS Instan';
+                        instructionHTML = 'Scan Kode QRIS SemarangCar di kasir atau konfirmasi bukti bayar ke WA Admin.';
+                    }
+
+                    document.getElementById('modalMetodeBayar').innerText = metodeText;
+                    document.getElementById('paymentInstructionArea').innerHTML = `<i class="bi bi-info-circle me-1"></i> ${instructionHTML}`;
+
+                    const adminPhone = "628111111111";
+                    const waText = `Halo Admin SemarangCar, saya ingin konfirmasi pesanan sewa mobil:
+
+📌 *Detail Pesanan:*
+- *ID Booking:* #${data.id}
+- *Nama Pelanggan:* ${user.nama}
+- *Mobil:* ${carData ? carData.nama : 'Armada Mobil'}
+- *Tanggal Sewa:* ${data.tanggalMulai} (${data.durasiHari} Hari)
+- *Driver:* ${data.denganSopir ? 'Dengan Driver' : 'Lepas Kunci'}
+- *Metode Bayar:* ${metodeText}
+- *Total Biaya:* ${formatRupiah(data.totalHarga)}
+
+Mohon diproses untuk persetujuan. Terima kasih!`;
+
+                    document.getElementById('waDirectBtn').href = `https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`;
+                    bsSuccessModal.show();
                 } else {
-                    const err = await res.text();
-                    showToast(err || 'Gagal membuat booking', 'danger');
+                    showToast(data.message || 'Gagal membuat booking', 'danger');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<span>Konfirmasi Pemesanan</span> <i class="bi bi-arrow-right-short fs-4"></i>';
                 }
             } catch (e) {
-                showToast('Terjadi kesalahan jaringan', 'danger');
+                showToast('Terjadi kesalahan jaringan server', 'danger');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<span>Konfirmasi Pemesanan</span> <i class="bi bi-arrow-right-short fs-4"></i>';
             }
         }
     </script>

@@ -1,72 +1,354 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Pemesanan - Rental Mobil Semarang</title>
+    <title>Riwayat Sewa - SemarangCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printableInvoice, #printableInvoice * {
+                visibility: visible;
+            }
+            #printableInvoice {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top no-print">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="index.html">
-                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                <span>Semarang<span class="text-gradient">Car</span></span>
             </a>
-            <div class="d-flex align-items-center" id="authNavLinks"></div>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mobil.html">Katalog Mobil</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="riwayat.html">Riwayat Sewa</a></li>
+                </ul>
+                <div class="d-flex align-items-center" id="authNavLinks"></div>
+            </div>
         </div>
     </nav>
 
-    <main class="py-5">
+    <main class="py-5 no-print">
         <div class="container">
-            <h3 class="fw-bold mb-4">Riwayat Pemesanan Anda</h3>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-2">
+                <div>
+                    <span class="badge-custom badge-indigo mb-2">Aktivitas Sewa</span>
+                    <h2 class="fw-bold mb-1">Riwayat Booking Pemesanan</h2>
+                    <p class="text-secondary mb-0">Pantau status persetujuan dan riwayat transaksi sewa mobil Anda</p>
+                </div>
+            </div>
+
             <div id="bookingList">
-                <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+                <div class="card card-modern p-4 mb-3">
+                    <div class="skeleton mb-3" style="height: 28px; width: 40%;"></div>
+                    <div class="skeleton mb-2" style="height: 20px; width: 60%;"></div>
+                    <div class="skeleton" style="height: 20px; width: 30%;"></div>
+                </div>
             </div>
         </div>
     </main>
 
+    <!-- Modal E-Receipt / Invoice Printable -->
+    <div class="modal fade" id="invoiceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0 no-print">
+                    <h5 class="modal-title fw-bold"><i class="bi bi-receipt me-2 text-primary"></i> E-Receipt / Invoice Resmi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 p-md-5" id="printableInvoice">
+                    <!-- Dynamic Invoice Content -->
+                </div>
+                <div class="modal-footer border-top-0 pt-0 no-print d-flex justify-content-between">
+                    <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" onclick="window.print()" class="btn btn-primary-custom px-4">
+                        <i class="bi bi-printer me-2"></i> Cetak / Simpan PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="pt-5 pb-4 no-print">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="index.html">
+                        <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                        <span class="text-white">Semarang<span class="text-gradient">Car</span></span>
+                    </a>
+                    <p class="text-secondary small me-lg-4">Penyedia jasa rental mobil terbaik di Kota Semarang dengan pilihan armada terlengkap dan pelayanan profesional.</p>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Navigasi</h6>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="mobil.html" class="text-secondary text-decoration-none">Katalog Mobil</a></li>
+                        <li class="mb-2"><a href="riwayat.html" class="text-secondary text-decoration-none">Riwayat Booking</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Kontak & Alamat</h6>
+                    <p class="text-secondary small mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>Jl. Pemuda No. 123, Semarang</p>
+                    <p class="text-secondary small mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+62 811 1111 111</p>
+                    <p class="text-secondary small"><i class="bi bi-envelope me-2 text-primary"></i>info@semarangcar.com</p>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Sosial Media</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://wa.me/628111111111" target="_blank" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <p class="text-center text-secondary small mb-0">&copy; 2026 SemarangCar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <button id="btnBackToTop" class="btn btn-primary-custom no-print" aria-label="Kembali ke Atas"><i class="bi bi-arrow-up fs-5"></i></button>
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3 no-print"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', fetchHistory);
+        let userBookings = [];
+        let bsInvoiceModal = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bsInvoiceModal = new bootstrap.Modal(document.getElementById('invoiceModal'));
+            fetchHistory();
+        });
 
         async function fetchHistory() {
             const user = JSON.parse(localStorage.getItem('user'));
             const container = document.getElementById('bookingList');
 
             if (!user) {
-                container.innerHTML = '<div class="alert alert-warning">Silakan login untuk melihat riwayat pemesanan.</div>';
+                container.innerHTML = `
+                    <div class="p-5 rounded-4 bg-white border border-light text-center shadow-sm">
+                        <i class="bi bi-person-lock text-primary display-4 mb-3 d-block"></i>
+                        <h4 class="fw-bold">Silakan Masuk Terlebih Dahulu</h4>
+                        <p class="text-secondary mb-4">Anda perlu masuk dengan akun SemarangCar untuk melihat riwayat reservasi Anda.</p>
+                        <a href="login.html" class="btn btn-primary-custom px-4">Masuk Sekarang</a>
+                    </div>
+                `;
                 return;
             }
 
             try {
-                const res = await fetch(`${API_BASE_URL}/booking/user/${user.id}`);
-                const history = await res.json();
+                const res = await fetch(`${API_BASE_URL}/booking/user/${user.id}`, {
+                    headers: getAuthHeaders()
+                });
+                userBookings = await res.json();
 
-                if (history.length === 0) {
-                    container.innerHTML = '<p class="text-secondary">Belum ada riwayat booking.</p>';
+                if (!userBookings || userBookings.length === 0) {
+                    container.innerHTML = `
+                        <div class="p-5 rounded-4 bg-white border border-light text-center shadow-sm">
+                            <i class="bi bi-clock-history text-secondary display-4 mb-3 d-block"></i>
+                            <h4 class="fw-bold">Belum Ada Riwayat Pemesanan</h4>
+                            <p class="text-secondary mb-4">Anda belum pernah melakukan pemesanan sewa mobil di SemarangCar.</p>
+                            <a href="mobil.html" class="btn btn-primary-custom px-4">Cari & Sewa Mobil Sekarang</a>
+                        </div>
+                    `;
                     return;
                 }
 
-                container.innerHTML = history.map(item => `
-                    <div class="card card-modern p-4 mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h5 class="fw-bold mb-0">${item.mobil.nama}</h5>
-                            <span class="badge bg-warning-subtle text-warning border border-warning px-3 py-2 rounded-pill">${item.status}</span>
+                container.innerHTML = userBookings.map(item => {
+                    let badgeClass = 'badge-amber';
+                    let statusLabel = '<i class="bi bi-hourglass-split me-1"></i> Menunggu Persetujuan';
+
+                    if (item.status === 'APPROVED') {
+                        badgeClass = 'badge-emerald';
+                        statusLabel = '<i class="bi bi-check-circle-fill me-1"></i> Disetujui (Siap Pakai)';
+                    } else if (item.status === 'REJECTED') {
+                        badgeClass = 'badge-rose';
+                        statusLabel = '<i class="bi bi-x-circle-fill me-1"></i> Ditolak';
+                    }
+
+                    const adminPhone = "628111111111";
+                    const metodeText = item.metodePembayaran || 'COD / Tunai';
+                    const waText = `Halo Admin SemarangCar, saya ingin konfirmasi pesanan sewa mobil:
+
+📌 *Detail Pesanan:*
+- *ID Booking:* #${item.id}
+- *Nama Pelanggan:* ${user.nama}
+- *Mobil:* ${item.mobil ? item.mobil.nama : 'Armada Mobil'}
+- *Tanggal Sewa:* ${item.tanggalMulai} (${item.durasiHari} Hari)
+- *Driver:* ${item.denganSopir ? 'Dengan Driver' : 'Lepas Kunci'}
+- *Metode Bayar:* ${metodeText}
+- *Total Biaya:* ${formatRupiah(item.totalHarga)}
+
+Mohon diproses untuk persetujuan. Terima kasih!`;
+
+                    const waUrl = `https://wa.me/${adminPhone}?text=${encodeURIComponent(waText)}`;
+
+                    return `
+                        <div class="card card-modern p-4 mb-3 fade-in-up">
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-3 border-bottom pb-3">
+                                <div>
+                                    <span class="text-secondary small fw-semibold">Kode Booking: #${item.id}</span>
+                                    <h5 class="fw-bold mb-0 text-dark">${escapeHTML(item.mobil ? item.mobil.nama : 'Armada Mobil')}</h5>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge-custom ${badgeClass}">${statusLabel}</span>
+                                    <button onclick="openInvoice(${item.id})" class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-semibold d-inline-flex align-items-center gap-1">
+                                        <i class="bi bi-printer me-1"></i> E-Receipt
+                                    </button>
+                                    <a href="${waUrl}" target="_blank" class="btn btn-success btn-sm rounded-pill px-3 fw-semibold d-inline-flex align-items-center gap-1">
+                                        <i class="bi bi-whatsapp"></i> WA Admin
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 text-secondary small align-items-center">
+                                <div class="col-6 col-md-3">
+                                    <span class="d-block text-muted">Tanggal Mulai</span>
+                                    <strong class="text-dark fs-6"><i class="bi bi-calendar-event me-1 text-primary"></i> ${item.tanggalMulai}</strong>
+                                </div>
+                                <div class="col-6 col-md-2">
+                                    <span class="d-block text-muted">Durasi Sewa</span>
+                                    <strong class="text-dark fs-6"><i class="bi bi-clock me-1 text-primary"></i> ${item.durasiHari} Hari</strong>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <span class="d-block text-muted">Metode Pembayaran</span>
+                                    <strong class="text-dark fs-6"><i class="bi bi-credit-card me-1 text-primary"></i> ${metodeText}</strong>
+                                </div>
+                                <div class="col-6 col-md-4 text-md-end">
+                                    <span class="d-block text-muted">Total Pembayaran</span>
+                                    <strong class="text-primary fs-5">${formatRupiah(item.totalHarga)}</strong>
+                                </div>
+                            </div>
+
+                            ${item.catatan ? `
+                                <div class="mt-3 p-2.5 bg-light rounded-3 small text-secondary">
+                                    <i class="bi bi-info-circle me-1 text-primary"></i> <strong>Catatan:</strong> ${escapeHTML(item.catatan)}
+                                </div>
+                            ` : ''}
                         </div>
-                        <div class="row g-2 text-secondary small">
-                            <div class="col-md-3">Tanggal Mulai: <strong>${item.tanggalMulai}</strong></div>
-                            <div class="col-md-3">Durasi: <strong>${item.durasiHari} Hari</strong></div>
-                            <div class="col-md-3">Driver: <strong>${item.denganSopir ? 'Ya' : 'Tidak'}</strong></div>
-                            <div class="col-md-3 text-md-end text-primary fw-bold fs-6">${formatRupiah(item.totalHarga)}</div>
-                        </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             } catch (e) {
-                container.innerHTML = '<div class="alert alert-danger">Gagal memuat riwayat.</div>';
+                container.innerHTML = '<div class="alert alert-danger p-4 rounded-4 shadow-sm">Gagal memuat data riwayat pemesanan dari server.</div>';
             }
+        }
+
+        function openInvoice(bookingId) {
+            const booking = userBookings.find(b => b.id === bookingId);
+            if (!booking) return;
+
+            const user = JSON.parse(localStorage.getItem('user')) || {};
+            const invArea = document.getElementById('printableInvoice');
+
+            const isApproved = booking.status === 'APPROVED';
+            const stampBadge = isApproved 
+                ? '<div class="px-3 py-1 bg-success-subtle text-success border border-success rounded-3 fw-bold fs-5 text-uppercase">LUNAS / APPROVED</div>'
+                : '<div class="px-3 py-1 bg-warning-subtle text-warning border border-warning rounded-3 fw-bold fs-5 text-uppercase">MENUNGGU VERIFIKASI</div>';
+
+            const subtotalDriver = booking.denganSopir ? 150000 * booking.durasiHari : 0;
+            const subtotalMobil = booking.totalHarga - subtotalDriver;
+
+            invArea.innerHTML = `
+                <div class="d-flex justify-content-between align-items-start border-bottom pb-4 mb-4">
+                    <div>
+                        <h3 class="fw-bold text-primary mb-1"><i class="bi bi-car-front-fill me-2"></i>SemarangCar Rental</h3>
+                        <p class="text-secondary small mb-0">Jl. Pemuda No. 123, Kota Semarang, Jawa Tengah</p>
+                        <p class="text-secondary small mb-0">Telepon: +62 811 1111 111 | Email: info@semarangcar.com</p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="fw-bold text-dark mb-1">INVOICE SEWA</h4>
+                        <p class="text-secondary small mb-1">No. Ref: <strong>INV-SMR-${booking.id}</strong></p>
+                        <p class="text-secondary small mb-0">Tanggal: ${new Date().toLocaleDateString('id-ID')}</p>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4 p-3 bg-light rounded-4">
+                    <div class="col-md-6">
+                        <span class="text-muted small d-block">DITERBITKAN UNTUK (PELANGGAN):</span>
+                        <strong class="text-dark fs-6 d-block">${escapeHTML(user.nama || 'Pelanggan')}</strong>
+                        <span class="text-secondary small d-block">${escapeHTML(user.email || '')}</span>
+                        <span class="text-secondary small d-block">No HP: ${escapeHTML(user.noHp || '-')}</span>
+                    </div>
+                    <div class="col-md-6 text-md-end d-flex flex-column align-items-md-end justify-content-center">
+                        <span class="text-muted small d-block mb-1">STATUS RESERVASI:</span>
+                        ${stampBadge}
+                    </div>
+                </div>
+
+                <div class="table-responsive mb-4">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Deskripsi Sewa Armada</th>
+                                <th class="text-center">Durasi</th>
+                                <th class="text-end">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong>${escapeHTML(booking.mobil ? booking.mobil.nama : 'Armada Mobil')}</strong>
+                                    <span class="d-block small text-secondary">Merk: ${escapeHTML(booking.mobil ? booking.mobil.merk : '-')} | Transmisi: ${escapeHTML(booking.mobil ? booking.mobil.transmisi : '-')}</span>
+                                    <span class="d-block small text-secondary">Tanggal Sewa: ${booking.tanggalMulai}</span>
+                                </td>
+                                <td class="text-center">${booking.durasiHari} Hari</td>
+                                <td class="text-end fw-semibold">${formatRupiah(subtotalMobil)}</td>
+                            </tr>
+                            ${booking.denganSopir ? `
+                                <tr>
+                                    <td>
+                                        <strong>Layanan Driver / Sopir Profesional</strong>
+                                        <span class="d-block small text-secondary">Tarif Rp150.000 / hari</span>
+                                    </td>
+                                    <td class="text-center">${booking.durasiHari} Hari</td>
+                                    <td class="text-end fw-semibold">${formatRupiah(subtotalDriver)}</td>
+                                </tr>
+                            ` : ''}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="2" class="text-end fw-bold">Metode Pembayaran:</td>
+                                <td class="text-end fw-bold text-dark">${booking.metodePembayaran || 'COD / Tunai'}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-end fw-bold fs-5 text-dark">TOTAL BIAYA:</td>
+                                <td class="text-end fw-bold fs-5 text-primary">${formatRupiah(booking.totalHarga)}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <div class="p-3 border rounded-3 bg-light small text-secondary mb-2">
+                    <h6 class="fw-bold text-dark mb-1">Syarat & Ketentuan Pengambilan Unit:</h6>
+                    <ul class="mb-0 ps-3">
+                        <li>Wajib menunjukkan E-Receipt ini dan KTP asli saat serah terima unit mobil.</li>
+                        <li>Keterlambatan pengembalian unit melebihi durasi sewa akan dikenakan denda proporsional.</li>
+                    </ul>
+                </div>
+            `;
+
+            bsInvoiceModal.show();
         }
     </script>
 </body>

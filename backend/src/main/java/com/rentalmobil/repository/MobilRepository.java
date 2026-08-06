@@ -9,6 +9,7 @@ import java.util.List;
 public interface MobilRepository extends JpaRepository<MobilEntity, Long> {
 
     @Query("SELECT m FROM MobilEntity m WHERE " +
+           "(m.isDeleted = false OR m.isDeleted IS NULL) AND " +
            "(:transmisi IS NULL OR m.transmisi = :transmisi) AND " +
            "(:kapasitas IS NULL OR m.kapasitas >= :kapasitas) AND " +
            "(:maxHarga IS NULL OR m.harga <= :maxHarga) AND " +

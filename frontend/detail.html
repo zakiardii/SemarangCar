@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Mobil - Rental Mobil Semarang</title>
+    <title>Detail Mobil - SemarangCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -11,18 +11,80 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="index.html">
-                <i class="bi bi-car-front-fill me-2"></i>SemarangCar
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                <span>Semarang<span class="text-gradient">Car</span></span>
             </a>
-            <div class="d-flex align-items-center" id="authNavLinks"></div>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto gap-1">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+                    <li class="nav-item"><a class="nav-link" href="mobil.html">Katalog Mobil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="riwayat.html">Riwayat Sewa</a></li>
+                </ul>
+                <div class="d-flex align-items-center" id="authNavLinks"></div>
+            </div>
         </div>
     </nav>
 
     <main class="py-5">
         <div class="container" id="detailContainer">
-            <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+            <div class="row g-5">
+                <div class="col-lg-6">
+                    <div class="skeleton" style="height: 380px; border-radius: 20px;"></div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="skeleton mb-3" style="height: 36px; width: 60%;"></div>
+                    <div class="skeleton mb-4" style="height: 28px; width: 40%;"></div>
+                    <div class="skeleton mb-4" style="height: 80px; border-radius: 14px;"></div>
+                    <div class="skeleton" style="height: 50px; border-radius: 14px;"></div>
+                </div>
+            </div>
         </div>
     </main>
+
+    <footer class="pt-5 pb-4">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-4">
+                    <a class="navbar-brand d-flex align-items-center gap-2 mb-3" href="index.html">
+                        <i class="bi bi-car-front-fill fs-4 text-primary"></i>
+                        <span class="text-white">Semarang<span class="text-gradient">Car</span></span>
+                    </a>
+                    <p class="text-secondary small me-lg-4">Penyedia jasa rental mobil terbaik di Kota Semarang dengan pilihan armada terlengkap dan pelayanan profesional.</p>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Navigasi</h6>
+                    <ul class="list-unstyled text-secondary small">
+                        <li class="mb-2"><a href="index.html" class="text-secondary text-decoration-none">Beranda</a></li>
+                        <li class="mb-2"><a href="mobil.html" class="text-secondary text-decoration-none">Katalog Mobil</a></li>
+                        <li class="mb-2"><a href="riwayat.html" class="text-secondary text-decoration-none">Riwayat Booking</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Kontak & Alamat</h6>
+                    <p class="text-secondary small mb-2"><i class="bi bi-geo-alt me-2 text-primary"></i>Jl. Pemuda No. 123, Semarang</p>
+                    <p class="text-secondary small mb-2"><i class="bi bi-telephone me-2 text-primary"></i>+62 812 3456 7890</p>
+                    <p class="text-secondary small"><i class="bi bi-envelope me-2 text-primary"></i>info@semarangcar.com</p>
+                </div>
+                <div class="col-lg-3 col-md-4">
+                    <h6 class="fw-bold text-white mb-3">Sosial Media</h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-secondary btn-sm rounded-circle text-white" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25">
+            <p class="text-center text-secondary small mb-0">&copy; 2026 SemarangCar. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <button id="btnBackToTop" class="btn btn-primary-custom" aria-label="Kembali ke Atas"><i class="bi bi-arrow-up fs-5"></i></button>
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
@@ -43,48 +105,64 @@
                 const car = await res.json();
 
                 document.getElementById('detailContainer').innerHTML = `
-                    <div class="row g-5">
+                    <div class="row g-5 align-items-center fade-in-up">
                         <div class="col-lg-6">
-                            <img src="${car.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800'}" class="img-fluid rounded-4 shadow-sm w-100">
+                            <div class="position-relative">
+                                <img src="${car.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800'}" alt="${escapeHTML(car.nama)}" class="img-fluid rounded-4 shadow-lg w-100" style="max-height: 420px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=800';">
+                                <span class="position-absolute top-0 end-0 m-3 badge-custom ${car.statusTersedia ? 'badge-emerald' : 'badge-rose'} shadow-sm">
+                                    ${car.statusTersedia ? '<i class="bi bi-check-circle-fill"></i> Siap Disewa' : '<i class="bi bi-x-circle-fill"></i> Sedang Disewa'}
+                                </span>
+                            </div>
                         </div>
                         <div class="col-lg-6">
-                            <h2 class="fw-bold mb-2">${car.nama}</h2>
-                            <p class="text-secondary mb-3">Merk: ${car.merk}</p>
-                            <h3 class="text-primary fw-bold mb-4">${formatRupiah(car.harga)} <span class="fs-6 text-secondary fw-normal">/ hari</span></h3>
-                            
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge-custom badge-indigo">${escapeHTML(car.merk)}</span>
+                            </div>
+                            <h1 class="fw-bold mb-2">${escapeHTML(car.nama)}</h1>
+                            <div class="d-flex align-items-baseline gap-2 mb-4">
+                                <h2 class="text-primary fw-bold mb-0">${formatRupiah(car.harga)}</h2>
+                                <span class="text-secondary fw-semibold">/ hari (24 Jam)</span>
+                            </div>
+
                             <div class="row g-3 mb-4 text-center">
                                 <div class="col-4">
-                                    <div class="p-3 bg-white rounded-3 border">
-                                        <i class="bi bi-gear text-primary fs-4"></i>
-                                        <p class="small text-secondary mb-0 mt-1">Transmisi</p>
-                                        <p class="fw-semibold mb-0">${car.transmisi}</p>
+                                    <div class="p-3 bg-white rounded-4 border border-light shadow-sm">
+                                        <i class="bi bi-gear text-primary fs-3 d-block mb-1"></i>
+                                        <span class="small text-secondary d-block">Transmisi</span>
+                                        <strong class="text-dark">${escapeHTML(car.transmisi)}</strong>
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div class="p-3 bg-white rounded-3 border">
-                                        <i class="bi bi-people text-primary fs-4"></i>
-                                        <p class="small text-secondary mb-0 mt-1">Kapasitas</p>
-                                        <p class="fw-semibold mb-0">${car.kapasitas} Orang</p>
+                                    <div class="p-3 bg-white rounded-4 border border-light shadow-sm">
+                                        <i class="bi bi-people text-primary fs-3 d-block mb-1"></i>
+                                        <span class="small text-secondary d-block">Kapasitas</span>
+                                        <strong class="text-dark">${car.kapasitas} Kursi</strong>
                                     </div>
                                 </div>
                                 <div class="col-4">
-                                    <div class="p-3 bg-white rounded-3 border">
-                                        <i class="bi bi-fuel-pump text-primary fs-4"></i>
-                                        <p class="small text-secondary mb-0 mt-1">Bahan Bakar</p>
-                                        <p class="fw-semibold mb-0">${car.bahanBakar || 'Bensin'}</p>
+                                    <div class="p-3 bg-white rounded-4 border border-light shadow-sm">
+                                        <i class="bi bi-fuel-pump text-primary fs-3 d-block mb-1"></i>
+                                        <span class="small text-secondary d-block">Bahan Bakar</span>
+                                        <strong class="text-dark">${escapeHTML(car.bahanBakar || 'Bensin')}</strong>
                                     </div>
                                 </div>
                             </div>
 
-                            <h5 class="fw-bold mb-2">Deskripsi</h5>
-                            <p class="text-secondary mb-4">${car.deskripsi || 'Mobil nyaman dan bersih untuk kebutuhan perjalanan Anda di Semarang.'}</p>
+                            <h5 class="fw-bold mb-2">Spesifikasi & Deskripsi</h5>
+                            <p class="text-secondary mb-4 leading-relaxed">${escapeHTML(car.deskripsi || 'Armada mobil dalam kondisi prima, selalu diservis berkala, bersih, wangi, dan nyaman untuk segala kebutuhan perjalanan di Semarang.')}</p>
 
-                            <a href="booking.html?id=${car.id}" class="btn btn-primary-custom w-100 py-3 fs-5">Sewa Sekarang</a>
+                            <div class="d-flex gap-3">
+                                ${car.statusTersedia 
+                                    ? `<a href="booking.html?id=${car.id}" class="btn btn-primary-custom flex-grow-1 py-3 fs-6">Sewa Mobil Ini Sekarang <i class="bi bi-arrow-right-short fs-4"></i></a>`
+                                    : `<button disabled class="btn btn-secondary-custom flex-grow-1 py-3">Mobil Sedang Tidak Tersedia</button>`
+                                }
+                                <a href="mobil.html" class="btn btn-secondary-custom py-3 px-4" aria-label="Kembali ke Katalog"><i class="bi bi-arrow-left fs-5"></i></a>
+                            </div>
                         </div>
                     </div>
                 `;
             } catch (e) {
-                document.getElementById('detailContainer').innerHTML = '<div class="alert alert-danger">Detail mobil tidak ditemukan.</div>';
+                document.getElementById('detailContainer').innerHTML = '<div class="alert alert-danger p-4 rounded-4 shadow-sm">Detail mobil tidak ditemukan atau terjadi kesalahan server.</div>';
             }
         }
     </script>

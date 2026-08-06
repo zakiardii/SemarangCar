@@ -1,125 +1,559 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Admin - Rental Mobil Semarang</title>
+    <title>Dashboard Admin - SemarangCar</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        @media print {
+            body * { visibility: hidden; }
+            #printableReport, #printableReport * { visibility: visible; }
+            #printableReport { position: absolute; left: 0; top: 0; width: 100%; }
+            .no-print { display: none !important; }
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm no-print">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="admin.html">
-                <i class="bi bi-shield-lock-fill me-2"></i>Admin Dashboard
+            <a class="navbar-brand d-flex align-items-center gap-2 fw-bold text-white" href="admin.html">
+                <i class="bi bi-shield-lock-fill text-primary fs-4"></i>
+                <span>SemarangCar <span class="badge bg-primary text-white fs-6 ms-1 rounded-pill">Admin</span></span>
             </a>
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3"><i class="bi bi-person-circle me-1"></i> Administrator</span>
-                <button onclick="logout()" class="btn btn-outline-light btn-sm">Logout</button>
+            <div class="d-flex align-items-center gap-3">
+                <span class="text-white small d-none d-sm-inline" id="adminNameDisplay"><i class="bi bi-person-circle me-1 text-primary"></i> Administrator</span>
+                <a href="index.html" class="btn btn-outline-light btn-sm rounded-3 me-2"><i class="bi bi-house me-1"></i> Ke Website</a>
+                <button onclick="logout()" class="btn btn-danger btn-sm rounded-3"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
             </div>
         </div>
     </nav>
 
     <main class="py-5">
         <div class="container">
-            <h3 class="fw-bold mb-4">Kelola Pemesanan Pelanggan</h3>
-            <div class="card card-modern p-4">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                            <tr>
-                                <th>ID</th>
-                                <th>Pelanggan</th>
-                                <th>Mobil</th>
-                                <th>Tanggal</th>
-                                <th>Durasi</th>
-                                <th>Total Biaya</th>
-                                <th>Status Saat Ini</th>
-                                <th>Aksi Ubah Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminBookingTable">
-                            <tr><td colspan="8" class="text-center py-4">Memuat data...</td></tr>
-                        </tbody>
-                    </table>
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3 no-print">
+                <div>
+                    <h2 class="fw-bold mb-1">Dashboard Pengelolaan Rental</h2>
+                    <p class="text-secondary mb-0">Kelola persetujuan reservasi pelanggan, manajemen armada, dan analisis laporan keuangan</p>
+                </div>
+            </div>
+
+            <!-- Tab Navigation -->
+            <ul class="nav nav-pills gap-2 mb-4 p-2 bg-white rounded-4 border border-light shadow-sm no-print" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active rounded-3 px-4 py-2.5 fw-bold" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings-panel" type="button" role="tab">
+                        <i class="bi bi-receipt-cutoff me-2"></i> Transaksi Booking
+                        <span class="badge bg-danger text-white ms-2 rounded-pill d-none" id="pendingBookingBadge">0</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-3 px-4 py-2.5 fw-bold" id="cars-tab" data-bs-toggle="tab" data-bs-target="#cars-panel" type="button" role="tab">
+                        <i class="bi bi-car-front me-2"></i> Manajemen Armada Mobil
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link rounded-3 px-4 py-2.5 fw-bold" id="finance-tab" data-bs-toggle="tab" data-bs-target="#finance-panel" type="button" role="tab" onclick="loadFinancialReport()">
+                        <i class="bi bi-graph-up-arrow me-2"></i> Laporan Keuangan & Analytics
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="adminTabsContent">
+                <!-- Panel 1: Booking Management -->
+                <div class="tab-pane fade show active" id="bookings-panel" role="tabpanel">
+                    <div class="card card-modern p-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold mb-0">Daftar Pemesanan Masuk</h5>
+                            <button onclick="loadAllBookings()" class="btn btn-secondary-custom btn-sm"><i class="bi bi-arrow-clockwise me-1"></i> Refresh</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Pelanggan</th>
+                                        <th>Mobil</th>
+                                        <th>Metode Bayar</th>
+                                        <th>Tanggal Sewa</th>
+                                        <th>Durasi</th>
+                                        <th>Total Biaya</th>
+                                        <th>Status Saat Ini</th>
+                                        <th class="text-end">Aksi Ubah Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminBookingTable">
+                                    <tr><td colspan="9" class="text-center py-4 text-secondary">Memuat daftar pesanan...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 2: Mobil CRUD Management -->
+                <div class="tab-pane fade" id="cars-panel" role="tabpanel">
+                    <div class="card card-modern p-4">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-4 gap-2">
+                            <h5 class="fw-bold mb-0">Kelola Daftar Armada Mobil</h5>
+                            <button onclick="openCarModal()" class="btn btn-primary-custom btn-sm">
+                                <i class="bi bi-plus-lg me-1"></i> Tambah Mobil Baru
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Mobil</th>
+                                        <th>Merk</th>
+                                        <th>Harga / Hari</th>
+                                        <th>Transmisi</th>
+                                        <th>Kapasitas</th>
+                                        <th>Status Armada</th>
+                                        <th class="text-end">Aksi Kelola</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminCarTable">
+                                    <tr><td colspan="7" class="text-center py-4 text-secondary">Memuat daftar mobil...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel 3: Financial Analytics & Reports (Item 2B) -->
+                <div class="tab-pane fade" id="finance-panel" role="tabpanel">
+                    <div id="printableReport">
+                        <!-- Stat Summary Cards -->
+                        <div class="row g-3 mb-4 no-print">
+                            <div class="col-6 col-md-3">
+                                <div class="card card-modern p-3 border-0 bg-primary text-white">
+                                    <span class="small text-white-50 d-block">TOTAL OMSET APPROVED</span>
+                                    <h4 class="fw-bold mb-0" id="statOmsetApproved">Rp0</h4>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card card-modern p-3 border-0 bg-success text-white">
+                                    <span class="small text-white-50 d-block">TRANSAKSI APPROVED</span>
+                                    <h4 class="fw-bold mb-0" id="statCountApproved">0</h4>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card card-modern p-3 border-0 bg-warning text-dark">
+                                    <span class="small text-dark-50 d-block">TRANSAKSI PENDING</span>
+                                    <h4 class="fw-bold mb-0" id="statCountPending">0</h4>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="card card-modern p-3 border-0 bg-dark text-white">
+                                    <span class="small text-white-50 d-block">TOTAL SEWA UNIT</span>
+                                    <h4 class="fw-bold mb-0" id="statCountMobil">0 Unit</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Report Table -->
+                        <div class="card card-modern p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <div>
+                                    <h5 class="fw-bold mb-0">Laporan Keuangan & Pendapatan</h5>
+                                    <span class="text-secondary small">Rekapitulasi pendapatan transaksi penyewaan armada</span>
+                                </div>
+                                <button onclick="window.print()" class="btn btn-primary-custom btn-sm no-print">
+                                    <i class="bi bi-printer me-1"></i> Cetak Laporan PDF
+                                </button>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered align-middle">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>ID Ref</th>
+                                            <th>Pelanggan</th>
+                                            <th>Mobil Disewa</th>
+                                            <th>Metode Bayar</th>
+                                            <th>Tanggal Sewa</th>
+                                            <th>Nominal Biaya</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="financeTable">
+                                        <tr><td colspan="7" class="text-center py-4 text-secondary">Memuat laporan...</td></tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr class="table-light fw-bold">
+                                            <td colspan="5" class="text-end">TOTAL OMSET TERKUMPUL (APPROVED):</td>
+                                            <td colspan="2" class="text-primary fs-5" id="financeTotalApproved">Rp0</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+    <!-- Modal Form Tambah/Edit Mobil -->
+    <div class="modal fade" id="carModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 shadow-lg">
+                <div class="modal-header border-bottom-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="carModalTitle">Tambah Armada Mobil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="carForm">
+                        <input type="hidden" id="carId">
+                        
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="carNama">Nama Mobil</label>
+                                <input type="text" id="carNama" class="form-control" placeholder="Contoh: Avanza Veloz" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="carMerk">Merk / Brand</label>
+                                <input type="text" id="carMerk" class="form-control" placeholder="Contoh: Toyota" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-4">
+                                <label class="form-label" for="carHarga">Harga Sewa / Hari (Rp)</label>
+                                <input type="number" id="carHarga" class="form-control" min="50000" step="10000" placeholder="350000" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="carTransmisi">Transmisi</label>
+                                <select id="carTransmisi" class="form-select" required>
+                                    <option value="Manual">Manual</option>
+                                    <option value="Otomatis">Otomatis (Matic)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="carKapasitas">Kapasitas (Kursi)</label>
+                                <input type="number" id="carKapasitas" class="form-control" min="2" max="20" value="5" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label" for="carBahanBakar">Bahan Bakar</label>
+                                <select id="carBahanBakar" class="form-select" required>
+                                    <option value="Bensin">Bensin</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Listrik">Listrik (EV)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="carStatus">Status Ketersediaan Armada</label>
+                                <select id="carStatus" class="form-select" required>
+                                    <option value="true">Tersedia (Siap Disewa)</option>
+                                    <option value="false">Tidak Tersedia / Disewa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label" for="carGambarUrl">URL Gambar Mobil</label>
+                            <input type="url" id="carGambarUrl" class="form-control" placeholder="https://images.unsplash.com/...">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" for="carDeskripsi">Deskripsi Singkat</label>
+                            <textarea id="carDeskripsi" class="form-control" rows="3" placeholder="Informasi keunggulan mobil..."></textarea>
+                        </div>
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" id="saveCarBtn" class="btn btn-primary-custom">Simpan Armada Mobil</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="toastContainer" class="toast-container position-fixed bottom-0 end-0 p-3 no-print"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.js"></script>
     <script>
+        let bsCarModal = null;
+
         document.addEventListener('DOMContentLoaded', () => {
             const user = JSON.parse(localStorage.getItem('user'));
             if (!user || user.role !== 'ADMIN') {
-                alert('Akses ditolak! Halaman ini khusus Admin.');
-                window.location.href = 'login.html';
+                showToast('Akses ditolak! Halaman ini khusus Administrator.', 'danger');
+                setTimeout(() => window.location.href = 'login.html', 1000);
                 return;
             }
+
+            document.getElementById('adminNameDisplay').innerHTML = `<i class="bi bi-person-circle me-1 text-primary"></i> ${escapeHTML(user.nama)}`;
+
+            bsCarModal = new bootstrap.Modal(document.getElementById('carModal'));
+            document.getElementById('carForm').addEventListener('submit', saveCar);
+
             loadAllBookings();
+            loadAllCars();
         });
 
         async function loadAllBookings() {
             const tbody = document.getElementById('adminBookingTable');
             try {
-                const res = await fetch(`${API_BASE_URL}/booking`);
+                const res = await fetch(`${API_BASE_URL}/booking`, { headers: getAuthHeaders() });
                 const bookings = await res.json();
 
-                if (bookings.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-secondary">Belum ada pesanan masuk.</td></tr>';
+                if (!bookings || bookings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-secondary py-4">Belum ada pesanan masuk.</td></tr>';
+                    updatePendingBadge(0);
                     return;
                 }
 
+                const pendingCount = bookings.filter(b => b.status === 'PENDING').length;
+                updatePendingBadge(pendingCount);
+
                 tbody.innerHTML = bookings.map(b => {
-                    let badgeClass = 'bg-warning text-dark';
-                    if (b.status === 'APPROVED') badgeClass = 'bg-success text-white';
-                    if (b.status === 'REJECTED') badgeClass = 'bg-danger text-white';
+                    let badgeClass = 'badge-amber';
+                    if (b.status === 'APPROVED') badgeClass = 'badge-emerald';
+                    if (b.status === 'REJECTED') badgeClass = 'badge-rose';
+
+                    const userHp = b.user && b.user.noHp ? b.user.noHp.replace(/[^0-9]/g, '') : '';
+                    const waLink = userHp ? `https://wa.me/${userHp.startsWith('0') ? '62' + userHp.substring(1) : userHp}` : '#';
 
                     return `
                     <tr>
                         <td><strong>#${b.id}</strong></td>
-                        <td>${b.user ? b.user.nama : 'Pelanggan'}</td>
-                        <td>${b.mobil ? b.mobil.nama : '-'}</td>
+                        <td>
+                            <strong class="d-block text-dark">${escapeHTML(b.user ? b.user.nama : 'Pelanggan')}</strong>
+                            <span class="small text-secondary">${escapeHTML(b.user ? b.user.email : '')}</span>
+                            ${userHp ? `<a href="${waLink}" target="_blank" class="badge bg-success-subtle text-success text-decoration-none border border-success-subtle mt-1 d-inline-block"><i class="bi bi-whatsapp me-1"></i> ${escapeHTML(b.user.noHp)}</a>` : ''}
+                        </td>
+                        <td>
+                            <strong>${escapeHTML(b.mobil ? b.mobil.nama : '-')}</strong>
+                            <span class="d-block small text-secondary">${b.denganSopir ? '(Dengan Driver)' : '(Lepas Kunci)'}</span>
+                        </td>
+                        <td><span class="badge bg-light text-dark border">${b.metodePembayaran || 'COD'}</span></td>
                         <td>${b.tanggalMulai}</td>
                         <td>${b.durasiHari} Hari</td>
                         <td class="fw-bold text-primary">${formatRupiah(b.totalHarga)}</td>
-                        <td><span class="badge ${badgeClass} px-3 py-2 rounded-pill">${b.status}</span></td>
-                        <td>
-                            <button onclick="changeStatus(${b.id}, 'APPROVED')" class="btn btn-sm btn-success me-1" title="Setujui">
-                                <i class="bi bi-check-lg"></i>
+                        <td><span class="badge-custom ${badgeClass}">${b.status}</span></td>
+                        <td class="text-end">
+                            <button onclick="changeStatus(${b.id}, 'APPROVED')" class="btn btn-sm btn-outline-success me-1" title="Setujui Pesanan">
+                                <i class="bi bi-check-lg"></i> Setujui
                             </button>
-                            <button onclick="changeStatus(${b.id}, 'REJECTED')" class="btn btn-sm btn-danger" title="Tolak">
-                                <i class="bi bi-x-lg"></i>
+                            <button onclick="changeStatus(${b.id}, 'REJECTED')" class="btn btn-sm btn-outline-danger" title="Tolak Pesanan">
+                                <i class="bi bi-x-lg"></i> Tolak
                             </button>
                         </td>
                     </tr>
                     `;
                 }).join('');
             } catch (e) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-danger">Gagal memuat pesanan.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger py-4">Gagal memuat daftar pesanan.</td></tr>';
+            }
+        }
+
+        async function loadFinancialReport() {
+            const tbody = document.getElementById('financeTable');
+            try {
+                const res = await fetch(`${API_BASE_URL}/booking`, { headers: getAuthHeaders() });
+                const bookings = await res.json();
+
+                if (!bookings || bookings.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-secondary py-4">Belum ada data keuangan.</td></tr>';
+                    return;
+                }
+
+                const approvedList = bookings.filter(b => b.status === 'APPROVED');
+                const pendingList = bookings.filter(b => b.status === 'PENDING');
+                const totalOmset = approvedList.reduce((acc, curr) => acc + (curr.totalHarga || 0), 0);
+
+                document.getElementById('statOmsetApproved').innerText = formatRupiah(totalOmset);
+                document.getElementById('statCountApproved').innerText = approvedList.length;
+                document.getElementById('statCountPending').innerText = pendingList.length;
+                document.getElementById('statCountMobil').innerText = approvedList.length + ' Unit';
+                document.getElementById('financeTotalApproved').innerText = formatRupiah(totalOmset);
+
+                tbody.innerHTML = bookings.map(b => {
+                    let badgeClass = 'bg-secondary';
+                    if (b.status === 'APPROVED') badgeClass = 'bg-success';
+                    if (b.status === 'PENDING') badgeClass = 'bg-warning text-dark';
+                    if (b.status === 'REJECTED') badgeClass = 'bg-danger';
+
+                    return `
+                    <tr>
+                        <td><strong>#INV-${b.id}</strong></td>
+                        <td>${escapeHTML(b.user ? b.user.nama : '-')}</td>
+                        <td>${escapeHTML(b.mobil ? b.mobil.nama : '-')}</td>
+                        <td>${b.metodePembayaran || 'COD'}</td>
+                        <td>${b.tanggalMulai} (${b.durasiHari} Hari)</td>
+                        <td class="fw-bold ${b.status === 'APPROVED' ? 'text-primary' : 'text-secondary'}">${formatRupiah(b.totalHarga)}</td>
+                        <td><span class="badge ${badgeClass}">${b.status}</span></td>
+                    </tr>
+                    `;
+                }).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Gagal memuat laporan keuangan.</td></tr>';
+            }
+        }
+
+        function updatePendingBadge(count) {
+            const badge = document.getElementById('pendingBookingBadge');
+            if (!badge) return;
+            if (count > 0) {
+                badge.innerText = count;
+                badge.classList.remove('d-none');
+            } else {
+                badge.classList.add('d-none');
             }
         }
 
         async function changeStatus(bookingId, statusBaru) {
+            if (!confirm(`Konfirmasi ubah status pesanan #${bookingId} menjadi ${statusBaru}?`)) return;
+
             try {
                 const res = await fetch(`${API_BASE_URL}/booking/${bookingId}/status`, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify({ status: statusBaru })
                 });
 
                 if (res.ok) {
-                    showToast(`Status berhasil diubah menjadi ${statusBaru}`, 'success');
+                    showToast(`Status pesanan #${bookingId} berhasil diubah ke ${statusBaru}`, 'success');
                     loadAllBookings();
                 } else {
-                    showToast('Gagal mengubah status', 'danger');
+                    showToast('Gagal mengubah status pesanan', 'danger');
                 }
             } catch (e) {
                 showToast('Terjadi kesalahan koneksi', 'danger');
+            }
+        }
+
+        async function loadAllCars() {
+            const tbody = document.getElementById('adminCarTable');
+            try {
+                const res = await fetch(`${API_BASE_URL}/mobil`);
+                const cars = await res.json();
+
+                if (!cars || cars.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-secondary py-4">Belum ada armada mobil di katalog.</td></tr>';
+                    return;
+                }
+
+                tbody.innerHTML = cars.map(c => `
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <img src="${c.gambarUrl || 'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=200'}" alt="${escapeHTML(c.nama)}" class="rounded-3" style="width: 50px; height: 40px; object-fit: cover;" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&q=80&w=200';">
+                                <strong>${escapeHTML(c.nama)}</strong>
+                            </div>
+                        </td>
+                        <td>${escapeHTML(c.merk)}</td>
+                        <td class="fw-bold text-primary">${formatRupiah(c.harga)}</td>
+                        <td>${escapeHTML(c.transmisi)}</td>
+                        <td>${c.kapasitas} Kursi</td>
+                        <td>
+                            <span class="badge-custom ${c.statusTersedia ? 'badge-emerald' : 'badge-rose'}">
+                                ${c.statusTersedia ? 'Tersedia' : 'Disewa / Maintenance'}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            <button onclick="editCar(${c.id})" class="btn btn-sm btn-outline-primary me-1" title="Edit Mobil"><i class="bi bi-pencil"></i></button>
+                            <button onclick="deleteCar(${c.id}, '${escapeHTML(c.nama)}')" class="btn btn-sm btn-outline-danger" title="Hapus Mobil"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                `).join('');
+            } catch (e) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger py-4">Gagal memuat daftar mobil.</td></tr>';
+            }
+        }
+
+        function openCarModal() {
+            document.getElementById('carForm').reset();
+            document.getElementById('carId').value = '';
+            document.getElementById('carModalTitle').innerText = 'Tambah Armada Mobil Baru';
+            bsCarModal.show();
+        }
+
+        async function editCar(id) {
+            try {
+                const res = await fetch(`${API_BASE_URL}/mobil/${id}`);
+                const car = await res.json();
+
+                document.getElementById('carId').value = car.id;
+                document.getElementById('carNama').value = car.nama;
+                document.getElementById('carMerk').value = car.merk;
+                document.getElementById('carHarga').value = car.harga;
+                document.getElementById('carTransmisi').value = car.transmisi;
+                document.getElementById('carKapasitas').value = car.kapasitas;
+                document.getElementById('carBahanBakar').value = car.bahanBakar || 'Bensin';
+                document.getElementById('carStatus').value = car.statusTersedia ? 'true' : 'false';
+                document.getElementById('carGambarUrl').value = car.gambarUrl || '';
+                document.getElementById('carDeskripsi').value = car.deskripsi || '';
+
+                document.getElementById('carModalTitle').innerText = 'Edit Armada Mobil #' + car.id;
+                bsCarModal.show();
+            } catch (e) {
+                showToast('Gagal memuat data mobil untuk diedit', 'danger');
+            }
+        }
+
+        async function saveCar(e) {
+            e.preventDefault();
+            const id = document.getElementById('carId').value;
+            const isEdit = !!id;
+
+            const payload = {
+                nama: document.getElementById('carNama').value.trim(),
+                merk: document.getElementById('carMerk').value.trim(),
+                harga: parseFloat(document.getElementById('carHarga').value),
+                transmisi: document.getElementById('carTransmisi').value,
+                kapasitas: parseInt(document.getElementById('carKapasitas').value),
+                bahanBakar: document.getElementById('carBahanBakar').value,
+                statusTersedia: document.getElementById('carStatus').value === 'true',
+                gambarUrl: document.getElementById('carGambarUrl').value.trim(),
+                deskripsi: document.getElementById('carDeskripsi').value.trim()
+            };
+
+            const url = isEdit ? `${API_BASE_URL}/mobil/${id}` : `${API_BASE_URL}/mobil`;
+            const method = isEdit ? 'PUT' : 'POST';
+
+            try {
+                const res = await fetch(url, {
+                    method: method,
+                    headers: getAuthHeaders(),
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showToast(`Armada mobil berhasil ${isEdit ? 'diperbarui' : 'ditambahkan'}!`, 'success');
+                    bsCarModal.hide();
+                    loadAllCars();
+                } else {
+                    showToast('Gagal menyimpan armada mobil', 'danger');
+                }
+            } catch (e) {
+                showToast('Terjadi kesalahan koneksi', 'danger');
+            }
+        }
+
+        async function deleteCar(id, nama) {
+            if (!confirm(`Apakah Anda yakin ingin menghapus armada mobil "${nama}"?`)) return;
+
+            try {
+                const res = await fetch(`${API_BASE_URL}/mobil/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeaders()
+                });
+
+                if (res.ok) {
+                    showToast(`Armada mobil "${nama}" berhasil dihapus`, 'success');
+                    loadAllCars();
+                } else {
+                    showToast('Gagal menghapus armada mobil', 'danger');
+                }
+            } catch (e) {
+                showToast('Terjadi kesalahan jaringan', 'danger');
             }
         }
     </script>

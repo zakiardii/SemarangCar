@@ -1,13 +1,26 @@
-# Folder hasil build Java 
+# Folder Hasil Build Java & Maven
 **/target/
 *.class
 *.jar
 *.war
 
-# Pengaturan IDE / Code Editor
+# Database Lokal H2 & Data Temporary
+**/data/
+*.mv.db
+*.trace.db
+*.db
+
+# Log Files
+*.log
+**/logs/
+
+# Pengaturan IDE / Code Editor (VS Code, IntelliJ, Eclipse)
 .vscode/
 .idea/
 *.iml
+.classpath
+.project
+.settings/
 
 # System Files
 .DS_Store
